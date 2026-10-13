@@ -2,8 +2,15 @@
 
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import Button from '@/components/ui/Button'
+import buttonStyles from '@/components/ui/Button.module.css'
 import styles from './cart.module.css'
+
+const BagIcon = () => (
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M5 8h14l-1 12H6L5 8z" />
+    <path d="M9 8V6a3 3 0 016 0v2" />
+  </svg>
+)
 
 // Describes the shape of each cart item from the backend
 interface CartItem {
@@ -12,6 +19,7 @@ interface CartItem {
   name:       string
   price:      number
   quantity:   number
+  image?:     string  // not returned by the cart API yet
 }
 
 export default function CartPage() {
@@ -78,81 +86,102 @@ export default function CartPage() {
 
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
-  if (loading) return <p style={{ padding: '24px' }}>Loading cart...</p>
+  const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0)
+
+  if (loading) {
+    return (
+      <main className="container" aria-busy="true">
+        <h1 className={styles.title}>Your cart</h1>
+        <div className={styles.itemList}>
+          <div className={`skeleton ${styles.skeletonItem}`} />
+          <div className={`skeleton ${styles.skeletonItem}`} />
+        </div>
+      </main>
+    )
+  }
 
   return (
-    <main className={styles.page}>
+    <main className="container">
 
-      <h1 className={styles.title}>Your Cart</h1>
+      <h1 className={styles.title}>Your cart</h1>
 
-      {error && <p style={{ color: 'red', padding: '12px' }}>{error}</p>}
+      {error && <p className={styles.error} role="alert">{error}</p>}
 
       {cartItems.length === 0 ? (
-        <p className={styles.empty}>Your cart is empty.</p>
+        <div className="empty-state">
+          <h2>Your cart is empty</h2>
+          <p>Products you add will appear here until you check out.</p>
+          <Link href="/" className={`${buttonStyles.btn} ${buttonStyles.primary} ${buttonStyles.inline}`}>
+            Browse products
+          </Link>
+        </div>
       ) : (
-        <div className={styles.itemList}>
+        <div className={styles.layout}>
 
-          {cartItems.map(item => (
-            <div key={item.id} className={styles.item}>
+          <ul className={styles.itemList}>
+            {cartItems.map(item => (
+              <li key={item.id} className={styles.item}>
 
-              {/* Product image placeholder */}
-              <div className={styles.itemImage} />
+                <div className={styles.itemImage}>
+                  {item.image ? <img src={item.image} alt="" /> : <BagIcon />}
+                </div>
 
-              {/* Product name and price */}
-              <div className={styles.itemInfo}>
-                <p className={styles.itemName}>{item.name}</p>
-                <p className={styles.itemPrice}>${item.price.toFixed(2)}</p>
+                <div className={styles.itemInfo}>
+                  <p className={styles.itemName}>{item.name}</p>
+                  <p className={styles.itemPrice}>${item.price.toFixed(2)} each</p>
 
-                {/* Quantity controls */}
-                <div className={styles.quantity}>
+                  <div className={styles.quantity} role="group" aria-label={`Quantity of ${item.name}`}>
+                    <button
+                      className={`a11y-sized ${styles.quantityBtn}`}
+                      onClick={() => handleQuantityChange(item.id, -1)}
+                      disabled={item.quantity <= 1}
+                      aria-label="Decrease quantity"
+                    >
+                      −
+                    </button>
+                    <span className={styles.quantityNumber} aria-live="polite">{item.quantity}</span>
+                    <button
+                      className={`a11y-sized ${styles.quantityBtn}`}
+                      onClick={() => handleQuantityChange(item.id, 1)}
+                      aria-label="Increase quantity"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                <div className={styles.itemEnd}>
+                  <p className={styles.itemTotal}>
+                    ${(item.price * item.quantity).toFixed(2)}
+                  </p>
                   <button
-                    className={styles.quantityBtn}
-                    onClick={() => handleQuantityChange(item.id, -1)}
+                    className={`a11y-sized ${styles.remove}`}
+                    onClick={() => handleRemove(item.id)}
+                    aria-label={`Remove ${item.name} from cart`}
                   >
-                    −
-                  </button>
-                  <span className={styles.quantityNumber}>{item.quantity}</span>
-                  <button
-                    className={styles.quantityBtn}
-                    onClick={() => handleQuantityChange(item.id, 1)}
-                  >
-                    +
+                    Remove
                   </button>
                 </div>
-              </div>
 
-              {/* Item total and remove button */}
-              <div>
-                <p className={styles.itemTotal}>
-                  ${(item.price * item.quantity).toFixed(2)}
-                </p>
-                <Button variant="danger" fullWidth={false} onClick={() => handleRemove(item.id)}>
-                  Remove
-                </Button>
-              </div>
+              </li>
+            ))}
+          </ul>
 
+          <aside className={styles.summary} aria-labelledby="summary-title">
+            <h2 id="summary-title" className={styles.summaryTitle}>Order summary</h2>
+            <div className={styles.totalRow}>
+              <p className={styles.totalLabel}>Total ({itemCount} item{itemCount === 1 ? '' : 's'})</p>
+              <p className={styles.totalAmount}>${total.toFixed(2)}</p>
             </div>
-          ))}
-
-          {/* Total row */}
-          <div className={styles.footer}>
-            <p className={styles.totalLabel}>Total</p>
-            <p className={styles.totalAmount}>${total.toFixed(2)}</p>
-          </div>
-
-          {/* Action buttons */}
-          <div className={styles.actions}>
-            <Link href="/checkout" style={{ textDecoration: 'none' }}>
-              <Button variant="primary" type="button">
-                Proceed to Checkout
-              </Button>
-            </Link>
-            <Link href="/" style={{ textDecoration: 'none' }}>
-              <Button variant="secondary" type="button">
-                Continue Shopping
-              </Button>
-            </Link>
-          </div>
+            <div className={styles.actions}>
+              <Link href="/checkout" className={`${buttonStyles.btn} ${buttonStyles.primary}`}>
+                Proceed to checkout
+              </Link>
+              <Link href="/" className={`${buttonStyles.btn} ${buttonStyles.secondary}`}>
+                Continue shopping
+              </Link>
+            </div>
+          </aside>
 
         </div>
       )}

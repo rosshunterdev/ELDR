@@ -8,7 +8,7 @@ import Navbar from '@/components/ui/Navbar'  // works because it's the default e
 // Atkinson Hyperlegible was designed by the Braille Institute for low-vision
 // readers: look-alike characters (I l 1, O 0, b d) are deliberately distinct.
 const atkinson = Atkinson_Hyperlegible_Next({
-  variable: "--font-sans",
+  variable: "--font-atkinson",
   subsets: ["latin"],
 });
 

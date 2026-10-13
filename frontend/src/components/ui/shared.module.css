@@ -1,26 +1,28 @@
 /* Reusable across all pages */
 
-/* Green success box */
+/* Success message */
 .success {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 0.67rem;
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
-    text-align: center;
+    background-color: var(--color-mint-surface);
+    color: var(--color-trust-green);
+    border: 1px solid var(--color-trust-green);
+    font-weight: 600;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-4);
 }
 
-/* Red error box */
+/* Error message */
 .error {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 0.67rem;
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
-    text-align: center;
+    background-color: var(--color-danger-surface);
+    color: var(--color-danger);
+    border: 1px solid var(--color-danger);
+    font-weight: 600;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-4);
 }
 
 /* Space above submit button inside a form */
 .form button[type='submit'] {
-    margin-top: 1rem;
+    margin-top: var(--space-4);
 }

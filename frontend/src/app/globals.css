@@ -33,7 +33,7 @@
      Major-third scale (1.25) from an 18px root, all in rem so the
      accessibility toggle scales everything from one place.
      ========================================================================= */
-  --font-sans: 'Atkinson Hyperlegible Next', system-ui, sans-serif;
+  --font-sans: var(--font-atkinson), system-ui, sans-serif;
   --text-sm: 0.875rem;
   --text-base: 1rem;
   --text-lg: 1.25rem;

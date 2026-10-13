@@ -1,14 +1,51 @@
 .wrapper {
     min-height: 100vh;
-    background-color: var(--color-background);
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 1.33rem;
+    align-items: flex-start;
+    padding: var(--space-7) var(--space-4);
+    background-color: var(--color-background);
+}
+
+.inner {
+    width: 100%;
+    max-width: 28rem;
+}
+
+.brand {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--space-5);
+}
+
+.logo {
+    height: 3rem;
+    width: auto;
 }
 
 .card {
-    width: 100%;
-    max-width: 400px;
-    padding: 2.2rem;
+    padding: var(--space-6);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.title {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-5);
+}
+
+.footer {
+    margin-top: var(--space-5);
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .wrapper {
+        padding-top: var(--space-5);
+    }
+
+    .card {
+        padding: var(--space-5);
+    }
 }

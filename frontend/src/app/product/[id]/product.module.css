@@ -1,0 +1,146 @@
+.page {
+    padding-top: var(--space-4);
+}
+
+.back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.back:hover {
+    text-decoration: underline;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: var(--space-7);
+    align-items: start;
+}
+
+.media {
+    position: sticky;
+    top: var(--space-5);
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background-color: var(--color-mint-surface);
+    border: 1px solid var(--color-border);
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.need {
+    padding: 0.125rem 0.625rem;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border-strong);
+    font-size: var(--text-sm);
+    font-weight: 600;
+}
+
+/* Text with its read-aloud button beside it */
+.speakRow {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+}
+
+.title {
+    font-size: var(--text-2xl);
+    flex: 1;
+}
+
+.price {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    line-height: 1;
+}
+
+.description {
+    flex: 1;
+    font-size: var(--text-lg);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    max-width: 34em;
+}
+
+.purchase {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+    padding: var(--space-5);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 1.6em;
+    font-weight: 600;
+    color: var(--color-trust-green);
+}
+
+.status a {
+    min-height: 0;
+}
+
+/* Loading placeholder mirrors the real layout so nothing jumps */
+.skeletonMedia {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-lg);
+}
+
+.skeletonLine {
+    height: 1.25rem;
+}
+
+@media (max-width: 860px) {
+    .layout {
+        grid-template-columns: 1fr;
+        gap: var(--space-5);
+    }
+
+    .media {
+        position: static;
+    }
+
+    /* Keep the main action in reach above the bottom tab bar */
+    .purchase {
+        position: sticky;
+        bottom: var(--space-3);
+        box-shadow: var(--shadow-float);
+    }
+}
+
+@media (max-width: 768px) {
+    .purchase {
+        bottom: calc(72px + var(--space-3));
+    }
+}

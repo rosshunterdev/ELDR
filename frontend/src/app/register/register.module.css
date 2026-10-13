@@ -1,40 +1,51 @@
-/* Avatar circle placeholder */
-.avatar {
-    width: 7rem;
-    height: 7rem;
-    border-radius: 50%;
-    background-color: var(--color-border);
-    margin: 0 auto 2.2rem;
-}
-
-/* Role label above radio buttons */
-.roleLabel {
-    color: var(--color-text-muted);
-    margin-bottom: 0.5rem;
-}
-
-/* Radio button group container */
+/* Role choice: three large radio rows, easier to hit than bare radios */
 .roleGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1.2rem;
+    border: none;
+    margin-bottom: var(--space-4);
 }
 
-/* Each individual radio option row */
+.roleLabel {
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+}
+
+.roleOptions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2);
+}
+
 .roleOption {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    color: var(--color-text);
+    gap: var(--space-2);
+    min-height: 3rem;
+    padding: 0 var(--space-3);
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
     cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
-/* Back to login link at the bottom */
-.backLink {
-    display: block;
-    text-align: center;
-    color: var(--color-text-muted);
-    font-size: 1rem;
-    margin-top: 1rem;
+.roleOption:has(input:checked) {
+    border-color: var(--color-trust-green);
+    background-color: var(--color-mint-surface);
+}
+
+.roleOption input {
+    width: 1.25rem;
+    height: 1.25rem;
+    accent-color: var(--color-trust-green);
+}
+
+.roleOption:has(input:focus-visible) {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+}
+
+@media (max-width: 420px) {
+    .roleOptions {
+        grid-template-columns: 1fr;
+    }
 }

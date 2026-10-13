@@ -1,141 +1,208 @@
-/* Page wrapper */
-.page {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem 1.5rem;
-}
-
-/* Page title */
 .title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--color-primary);
-    margin-bottom: 2rem;
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-5);
 }
 
-/* Empty cart message */
-.empty {
-    color: var(--color-text-muted);
-    margin-top: 2rem;
+.error {
+    margin-bottom: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-danger-surface);
+    color: var(--color-danger);
+    font-weight: 600;
 }
 
-/* List of cart items */
+/* Items on the left, summary on the right */
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 20rem;
+    gap: var(--space-6);
+    align-items: start;
+}
+
 .itemList {
-    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    list-style: none;
 }
 
-/* Individual cart item card */
 .item {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 6rem minmax(0, 1fr) auto;
+    gap: var(--space-4);
     align-items: center;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
+    padding: var(--space-4);
     background-color: var(--color-surface);
-    border-radius: 0.75rem;
     border: 1px solid var(--color-border);
-    gap: 1rem;
+    border-radius: var(--radius-md);
 }
 
-/* Product image placeholder */
 .itemImage {
-    width: 6rem;
-    height: 6rem;
-    border-radius: 0.5rem;
-    background-color: var(--color-border);
-    flex-shrink: 0;
-}
-
-/* Product name and price text block */
-.itemInfo {
-    flex: 1;
-}
-
-/* Product name */
-.itemName {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--color-text);
-    margin-bottom: 0.25rem;
-}
-
-/* Unit price */
-.itemPrice {
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-}
-
-/* Total price for this item */
-.itemTotal {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--color-text);
-    margin-bottom: 0.5rem;
-    text-align: center;
-}
-
-/* Quantity controls row: − 1 + */
-.quantity {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 0.5rem;
-
-}
-
-/* The number shown between − and + */
-.quantityNumber {
-    font-size: 1rem;
-    font-weight: 600;
-    min-width: 1.5rem;
-    text-align: center;
-}
-
-/* − and + buttons */
-.quantityBtn {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    border: 1px solid var(--color-border);
-    background-color: var(--color-surface);
-    font-size: 1.2rem;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: unset;
-    min-width: unset;
+    width: 6rem;
+    height: 6rem;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-mint-surface);
+    color: var(--color-trust-green);
+    overflow: hidden;
 }
 
-/* Total and checkout row at the bottom */
-.footer {
-    border-top: 2px solid var(--color-border);
-    padding-top: 1.5rem;
-    margin-top: 1rem;
+.itemImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.itemInfo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.itemName {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.itemPrice {
+    color: var(--color-text-muted);
+}
+
+/* − 1 + stepper */
+.quantity {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+}
+
+.quantityNumber {
+    min-width: 2rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.quantityBtn {
+    width: var(--touch-target);
+    height: var(--touch-target);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: var(--radius-pill);
+    background: none;
+    color: var(--color-text);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.quantityBtn:hover:not(:disabled) {
+    background-color: var(--color-background);
+}
+
+.quantityBtn:disabled {
+    color: var(--color-border-strong);
+    cursor: not-allowed;
+}
+
+.itemEnd {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-2);
+}
+
+.itemTotal {
+    font-size: var(--text-lg);
+    font-weight: 700;
+}
+
+.remove {
+    padding: 0 var(--space-2);
+    background: none;
+    border: none;
+    color: var(--color-danger);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    cursor: pointer;
+}
+
+/* Order summary panel */
+.summary {
+    position: sticky;
+    top: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.summaryTitle {
+    font-size: var(--text-lg);
+}
+
+.totalRow {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
+    align-items: baseline;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border);
 }
 
-/* "Total" label */
 .totalLabel {
-    font-size: 1.2rem;
     font-weight: 700;
-    color: var(--color-text);
 }
 
-/* Total amount */
 .totalAmount {
-    font-size: 1.5rem;
+    font-size: var(--text-xl);
     font-weight: 700;
-    color: var(--color-primary);
 }
 
-/* Button stack at bottom */
 .actions {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--space-3);
+}
+
+.skeletonItem {
+    height: 8rem;
+    border-radius: var(--radius-md);
+}
+
+@media (max-width: 860px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .summary {
+        position: static;
+    }
+}
+
+@media (max-width: 520px) {
+    .item {
+        grid-template-columns: 4.5rem minmax(0, 1fr);
+    }
+
+    .itemImage {
+        width: 4.5rem;
+        height: 4.5rem;
+    }
+
+    .itemEnd {
+        grid-column: 1 / -1;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
 }

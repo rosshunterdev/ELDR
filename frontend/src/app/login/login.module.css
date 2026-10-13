@@ -1,30 +1,9 @@
-.logo {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto 2.2rem;
+.form button[type='submit'] {
+    margin-top: var(--space-2);
 }
 
-.error {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 0.67rem;
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
-    text-align: center;
-}
-
-.links {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 1.5rem;
-}
-
-.form {
-    margin-top: 2rem;
-}
-
-.form button {
-    margin-top: 2rem;
+.forgot {
+    display: inline-block;
+    margin-top: var(--space-4);
+    font-weight: 600;
 }

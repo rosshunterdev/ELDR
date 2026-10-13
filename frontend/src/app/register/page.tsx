@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import Button from '@/components/ui/Button'
 import InputField from '@/components/ui/InputField'
 import AuthCard from '@/components/ui/AuthCard'
@@ -77,51 +78,49 @@ export default function RegisterPage() {
     }
 
     return (
-        <AuthCard>
-            {/* Avatar placeholder */}
-            <div className={styles.avatar} />
-
+        <AuthCard
+            title="Create an account"
+            footer={<p>Already have an account? <Link href="/login">Log in</Link></p>}
+        >
             {/* Success message */}
             {message && <p className={shared.success}>{message}</p>}
 
             {/* Error message */}
-            {error && <p className={shared.error}>{error}</p>}
+            {error && <p className={shared.error} role="alert">{error}</p>}
 
             <form onSubmit={handleSubmit} className={shared.form}>
 
                 {/* Role selection */}
-                <p className={styles.roleLabel}>Role</p>
-                <div className={styles.roleGroup}>
-                    {['Elder', 'Caregiver', 'Seller'].map((role) => (
-                        <label key={role} className={styles.roleOption}>
-                            <input
-                                type="radio"
-                                name="role"
-                                value={role.toLowerCase()}
-                                checked={formData.role === role.toLowerCase()}
-                                onChange={handleChange}
-                            />
-                            {role}
-                        </label>
-                    ))}
-                </div>
+                <fieldset className={styles.roleGroup}>
+                    <legend className={styles.roleLabel}>I am signing up as</legend>
+                    <div className={styles.roleOptions}>
+                        {['Elder', 'Caregiver', 'Seller'].map((role) => (
+                            <label key={role} className={styles.roleOption}>
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value={role.toLowerCase()}
+                                    checked={formData.role === role.toLowerCase()}
+                                    onChange={handleChange}
+                                />
+                                {role}
+                            </label>
+                        ))}
+                    </div>
+                </fieldset>
 
-                <InputField label="First Name" id="firstName" name="firstName" onChange={handleChange} />
-                <InputField label="Last Name" id="lastName" name="lastName" onChange={handleChange} />
-                <InputField label="Phone Number" type="tel" id="phone" name="phone" onChange={handleChange} />
-                <InputField label="Email Address" type="email" id="email" name="email" onChange={handleChange} />
+                <InputField label="First name" id="firstName" name="firstName" onChange={handleChange} />
+                <InputField label="Last name" id="lastName" name="lastName" onChange={handleChange} />
+                <InputField label="Phone number" type="tel" id="phone" name="phone" onChange={handleChange} />
+                <InputField label="Email address" type="email" id="email" name="email" onChange={handleChange} />
                 <InputField label="Password" type="password" id="password" name="password" onChange={handleChange} />
-                <InputField label="Confirm Password" type="password" id="confirmPassword" name="confirmPassword" onChange={handleChange} />
+                <InputField label="Confirm password" type="password" id="confirmPassword" name="confirmPassword" onChange={handleChange} />
 
-                <Button variant="primary" type="submit">
-                    {loading ? 'Registering...' : 'Register'}
+                <Button variant="primary" type="submit" disabled={loading}>
+                    {loading ? 'Creating account...' : 'Create account'}
                 </Button>
 
             </form>
-
-            <a href="/login" className={styles.backLink}>
-                Back to Login
-            </a>
         </AuthCard>
     )
 }

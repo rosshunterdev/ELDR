@@ -5,6 +5,8 @@ import Button from '@/components/ui/Button'
 import InputField from '@/components/ui/InputField'
 import AuthCard from '@/components/ui/AuthCard'
 import styles from './login.module.css'
+import shared from '@/components/ui/shared.module.css'
+import Link from 'next/link'
 
 export default function LoginPage() {
 
@@ -51,30 +53,24 @@ export default function LoginPage() {
     }
 
     return (
-        <AuthCard>
-            <img
-                src="/logo.png"
-                alt="ELDR Logo"
-                className={styles.logo}
-            />
-
+        <AuthCard
+            title="Log in"
+            footer={<p>New to ELDR? <Link href="/register">Create an account</Link></p>}
+        >
             {error && (
-                <p className={styles.error}>{error}</p>
+                <p className={shared.error} role="alert">{error}</p>
             )}
 
             <form onSubmit={handleSubmit} className={styles.form}>
                 <InputField label="Email" type="email" id="email" name="email" onChange={handleChange} />
                 <InputField label="Password" type="password" id="password" name="password" onChange={handleChange} />
 
-                <Button variant="primary" type="submit">
-                    {loading ? 'Logging in...' : 'Login'}
+                <Button variant="primary" type="submit" disabled={loading}>
+                    {loading ? 'Logging in...' : 'Log in'}
                 </Button>
             </form>
 
-            <div className={styles.links}>
-                <a href="/forgot-password">Forgot password?</a>
-                <a href="/register">Create Account</a>
-            </div>
+            <Link href="/forgot-password" className={styles.forgot}>Forgot your password?</Link>
         </AuthCard>
     )
 }
