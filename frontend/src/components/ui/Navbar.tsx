@@ -4,25 +4,23 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import AccessibilityToggle from './AccessibilityToggle'
 import { useState, useEffect } from 'react'
+import styles from './Navbar.module.css'
 
 
 const HomeIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M2.5 8.5L10 2.5l7.5 6V17a1 1 0 01-1 1H13v-4.5H7V18H3.5a1 1 0 01-1-1V8.5z"/>
     </svg>
 )
 
-const BrowseIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="2" width="6.5" height="6.5" rx="1"/>
-        <rect x="11.5" y="2" width="6.5" height="6.5" rx="1"/>
-        <rect x="2" y="11.5" width="6.5" height="6.5" rx="1"/>
-        <rect x="11.5" y="11.5" width="6.5" height="6.5" rx="1"/>
+const HeartIcon = () => (
+    <svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M10 17s-7-4.35-7-9.5A3.75 3.75 0 0110 5.6a3.75 3.75 0 017 1.9C17 12.65 10 17 10 17z"/>
     </svg>
 )
 
 const CartIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M1.5 1.5h2.5l2 9h9.5l2-7H5.5"/>
         <circle cx="8" cy="16.5" r="1.5"/>
         <circle cx="14.5" cy="16.5" r="1.5"/>
@@ -30,7 +28,7 @@ const CartIcon = () => (
 )
 
 const AccountIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <circle cx="10" cy="7" r="3.5"/>
         <path d="M2 18.5c0-4.4 3.6-8 8-8s8 3.6 8 8"/>
     </svg>
@@ -50,136 +48,66 @@ export default function Navbar() {
 
     if (pathname === '/login' || pathname === '/register') return null
 
+    // Seller and admin links only appear for those roles
+    const desktopLinks = [
+        { href: '/', label: 'Home' },
+        { href: '/wishlist', label: 'Wishlist' },
+        { href: '/orders', label: 'Orders' },
+        { href: '/cart', label: 'Cart' },
+        { href: '/account', label: 'Account' },
+        ...(isSeller ? [{ href: '/sell', label: 'Sell' }] : []),
+        ...(isAdmin ? [{ href: '/admin', label: 'Admin' }] : []),
+    ]
+
+    const mobileTabs = [
+        { href: '/', label: 'Home', icon: <HomeIcon /> },
+        { href: '/wishlist', label: 'Wishlist', icon: <HeartIcon /> },
+        { href: '/cart', label: 'Cart', icon: <CartIcon /> },
+        { href: '/account', label: 'Account', icon: <AccountIcon /> },
+    ]
+
+    const current = (href: string) => (pathname === href ? 'page' : undefined)
+
+    const logo = (
+        <Link href="/" className={styles.brand} aria-label="ELDR home">
+            <img src="/logo.png" alt="" className={styles.logo} width={728} height={212} />
+        </Link>
+    )
+
     return (
-        <div>
+        <header>
             {/* Desktop navbar */}
-            <nav className="desktop-nav" style={{
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                backgroundColor: 'var(--color-nav-bg)',
-                color: 'var(--color-nav-text)',
-                padding: '0 2rem',
-                height: '64px',
-                borderBottom: '1px solid var(--color-nav-border)',
-            }}>
-                <span style={{
-                    fontWeight: 700,
-                    fontSize: '22px',
-                    color: 'var(--color-nav-text)',
-                    letterSpacing: '0.08em',
-                }}>
-                    ELDR
-                </span>
-                <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-                    <Link href="/" style={{
-                        color: pathname === "/" ? 'var(--color-nav-active)' : 'var(--color-nav-text)',
-                        textDecoration: 'none',
-                        fontWeight: 500,
-                    }}>Home</Link>
-                    <Link href="/cart" style={{
-                        color: pathname === "/cart" ? 'var(--color-nav-active)' : 'var(--color-nav-text)',
-                        textDecoration: 'none',
-                        fontWeight: 500,
-                    }}>Cart</Link>
-                    <Link href="/account" style={{
-                        color: pathname === "/account" ? 'var(--color-nav-active)' : 'var(--color-nav-text)',
-                        textDecoration: 'none',
-                        fontWeight: 500,
-                    }}>Account</Link>
-                    {isSeller && (
-                        <Link href="/sell" style={{
-                            color: pathname === "/sell" ? 'var(--color-nav-active)' : 'var(--color-nav-text)',
-                            textDecoration: 'none',
-                            fontWeight: 500,
-                        }}>Sell</Link>
-                    )}
-                    {isAdmin && (
-                        <Link href="/admin" style={{
-                            color: pathname === "/admin" ? 'var(--color-nav-active)' : 'var(--color-nav-text)',
-                            textDecoration: 'none',
-                            fontWeight: 500,
-                        }}>Admin</Link>
-                    )}
-                    <AccessibilityToggle />
-                </div>
+            <nav className={styles.desktopNav} aria-label="Main">
+                {logo}
+                <ul className={styles.links}>
+                    {desktopLinks.map((link) => (
+                        <li key={link.href}>
+                            <Link href={link.href} className={styles.link} aria-current={current(link.href)}>
+                                {link.label}
+                            </Link>
+                        </li>
+                    ))}
+                    <li className={styles.toggleSlot}>
+                        <AccessibilityToggle />
+                    </li>
+                </ul>
             </nav>
 
             {/* Mobile top header */}
-            <div className="mobile-header">
-                <span style={{
-                    fontWeight: 700,
-                    fontSize: '22px',
-                    color: 'var(--color-nav-text)',
-                    letterSpacing: '0.08em',
-                }}>
-                    ELDR
-                </span>
+            <div className={styles.mobileHeader}>
+                {logo}
                 <AccessibilityToggle />
             </div>
 
             {/* Mobile bottom nav */}
-            <nav className="mobile-nav">
-                <Link href="/" style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '2px',
-                    color: pathname === "/" ? 'var(--color-nav-active)' : 'var(--color-nav-text-inactive)',
-                    textDecoration: 'none',
-                    fontSize: '11px',
-                    minHeight: '44px',
-                    justifyContent: 'center',
-                    padding: '0 12px',
-                }}>
-                    <HomeIcon />
-                    <span>Home</span>
-                </Link>
-                <Link href="/" style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '2px',
-                    color: 'var(--color-nav-text-inactive)',
-                    textDecoration: 'none',
-                    fontSize: '11px',
-                    minHeight: '44px',
-                    justifyContent: 'center',
-                    padding: '0 12px',
-                }}>
-                    <BrowseIcon />
-                    <span>Browse</span>
-                </Link>
-                <Link href="/cart" style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '2px',
-                    color: pathname === "/cart" ? 'var(--color-nav-active)' : 'var(--color-nav-text-inactive)',
-                    textDecoration: 'none',
-                    fontSize: '11px',
-                    minHeight: '44px',
-                    justifyContent: 'center',
-                    padding: '0 12px',
-                }}>
-                    <CartIcon />
-                    <span>Cart</span>
-                </Link>
-                <Link href="/account" style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '2px',
-                    color: pathname === "/account" ? 'var(--color-nav-active)' : 'var(--color-nav-text-inactive)',
-                    textDecoration: 'none',
-                    fontSize: '11px',
-                    minHeight: '44px',
-                    justifyContent: 'center',
-                    padding: '0 12px',
-                }}>
-                    <AccountIcon />
-                    <span>Account</span>
-                </Link>
+            <nav className={styles.mobileNav} aria-label="Main">
+                {mobileTabs.map((tab) => (
+                    <Link key={tab.href} href={tab.href} className={styles.tab} aria-current={current(tab.href)}>
+                        {tab.icon}
+                        <span>{tab.label}</span>
+                    </Link>
+                ))}
             </nav>
-        </div>
+        </header>
     )
 }

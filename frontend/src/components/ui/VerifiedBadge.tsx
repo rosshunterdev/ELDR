@@ -1,21 +1,11 @@
+import styles from './VerifiedBadge.module.css'
+
 export default function VerifiedBadge() {
     return (
-        <span
-            aria-label="ELDR Verified product"
-            style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-                border: '1.5px solid var(--color-trust-green)',
-                color: 'var(--color-trust-green)',
-                borderRadius: '999px',
-                padding: '2px 10px',
-                fontSize: '13px',
-                fontWeight: 600,
-                lineHeight: 1.6,
-            }}
-        >
-            <span aria-hidden="true">✓</span>
+        <span className={styles.badge}>
+            <svg className={styles.icon} width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M3.5 8.5l3 3 6-7" />
+            </svg>
             ELDR Verified
         </span>
     )

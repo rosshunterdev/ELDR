@@ -1,0 +1,32 @@
+.field {
+    margin-bottom: var(--space-4);
+}
+
+.label {
+    display: block;
+    margin-bottom: var(--space-1);
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.input {
+    display: block;
+    width: 100%;
+    min-height: 3rem;
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-base);
+    color: var(--color-text);
+    background-color: var(--color-surface);
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    transition: border-color 0.15s ease;
+}
+
+.input:hover {
+    border-color: var(--color-text-muted);
+}
+
+.input:focus-visible {
+    border-color: var(--color-focus);
+    outline-offset: 0;
+}

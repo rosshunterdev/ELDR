@@ -1,3 +1,5 @@
+import styles from './InputField.module.css'
+
 type Props = {
     label: string;
     type?: 'text' | 'email' | 'password' | 'tel';
@@ -8,14 +10,8 @@ type Props = {
 
 export default function InputField({ label, type = 'text', id, name, onChange }: Props) {
     return (
-        <div style={{
-            marginBottom: '16px',
-        }}>
-            <label htmlFor={id} style={{
-                color: 'var(--color-text-muted)',
-                display: 'block',
-                marginBottom: '4px',
-            }}>
+        <div className={styles.field}>
+            <label htmlFor={id} className={styles.label}>
                 {label}
             </label>
             <input
@@ -23,16 +19,7 @@ export default function InputField({ label, type = 'text', id, name, onChange }:
                 id={id}
                 name={name}
                 onChange={onChange}
-                style={{
-                    width: '100%',
-                    border: '1px solid var(--color-border)',
-                    borderRadius: '12px',
-                    padding: '12px',
-                    fontSize: '18px',
-                    backgroundColor: 'var(--color-surface)',
-                    color: 'var(--color-text)',
-                    display: 'block',
-                }}
+                className={styles.input}
             />
         </div>
     )

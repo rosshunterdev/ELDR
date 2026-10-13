@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import { useState, useEffect } from 'react'
+import styles from './ProductCard.module.css'
 
 type Product = {
     id: number;
@@ -18,6 +19,15 @@ type Props = {
     product: Product;
 }
 
+// "daily living" -> "Daily living"
+const needLabel = (tag: string) => tag.charAt(0).toUpperCase() + tag.slice(1)
+
+const HeartIcon = () => (
+    <svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M10 17s-7-4.35-7-9.5A3.75 3.75 0 0110 5.6a3.75 3.75 0 017 1.9C17 12.65 10 17 10 17z"/>
+    </svg>
+)
+
 export default function ProductCard({ product }: Props) {
 
     const [saved, setSaved] = useState(false)
@@ -31,7 +41,12 @@ export default function ProductCard({ product }: Props) {
 
     async function handleWishlistToggle() {
         const user = JSON.parse(localStorage.getItem('user') || '{}')
-        if (!user.id) return
+        // Saving needs an account, so send signed-out shoppers to log in
+        // (matches Add to Cart on the product page)
+        if (!user.id) {
+            window.location.href = '/login'
+            return
+        }
 
         if (!saved) {
 
@@ -54,91 +69,42 @@ export default function ProductCard({ product }: Props) {
     }
 
     return (
-        <article style={{
-            backgroundColor: 'var(--color-surface)',
-            borderRadius: '12px',
-            border: '1px solid var(--color-border)',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-            overflow: 'hidden',
-        }}>
-            <div style={{ position: 'relative'}}>
-
-            
-            <img
-                src={product.image ?? 'https://placehold.co/400x220'}
-                alt={product.name}
-                style={{ width: '100%', height: '220px', objectFit: 'cover', display: 'block' }}
-            />
-
-            <button onClick={handleWishlistToggle}
-
-            aria-label={saved ? "Remove from wishlist" : "Save to wishlist"}
-            style={{position: 'absolute', top: '12px', right: '12px',
-                minWidth: '44px', minHeight: '44px',
-                background: 'rgba(255,255,255,0.85)', borderRadius: '50%', border: 'none', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-             }}>
-             <span style={{ fontSize: '20px', color: saved ? 'var(--color-primary)' : 'var(--color-text-muted)'}}>
-             {saved ? '❤' : '♡'}
-             </span>
-                
-            </button>
+        <article className={styles.card}>
+            <div className={styles.media}>
+                <img
+                    src={product.image ?? 'https://placehold.co/400x300'}
+                    alt=""
+                    loading="lazy"
+                    className={styles.image}
+                />
+                <button
+                    onClick={handleWishlistToggle}
+                    aria-label={`Save ${product.name} to wishlist`}
+                    aria-pressed={saved}
+                    className={`a11y-sized ${styles.save}`}
+                >
+                    <HeartIcon />
+                </button>
             </div>
 
-            <div style={{ padding: '20px 24px 24px' }}>
-                <p style={{
-                    fontSize: '18px',
-                    fontWeight: 700,
-                    color: 'var(--color-text)',
-                    marginBottom: '4px',
-                    textDecoration: 'none',
-                }}>
-                    <Link href={`/product/${product.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+            <div className={styles.body}>
+                <div className={styles.tags}>
+                    <span className={styles.need}>{needLabel(product.needsTag)}</span>
+                    {product.verified && <VerifiedBadge />}
+                </div>
+
+                <h2 className={styles.name}>
+                    <Link href={`/product/${product.id}`} className={styles.link}>
                         {product.name}
                     </Link>
-                </p>
+                </h2>
 
-                {product.verified && (
-                    <div style={{ marginBottom: '8px' }}>
-                        <VerifiedBadge />
-                    </div>
-                )}
+                <p className={styles.description}>{product.description}</p>
 
-                <p style={{
-                    color: 'var(--color-text-muted)',
-                    fontSize: '15px',
-                    marginBottom: '12px',
-                    lineHeight: 1.5,
-                }}>
-                    {product.description}
-                </p>
-
-                <p style={{
-                    fontSize: '22px',
-                    fontWeight: 700,
-                    color: 'var(--color-text)',
-                    marginBottom: '20px',
-                }}>
-                    ${product.price.toFixed(2)}
-                </p>
-
-                <Link
-                    href={`/product/${product.id}`}
-                    style={{
-                        display: 'block',
-                        textAlign: 'center',
-                        textDecoration: 'none',
-                        backgroundColor: 'var(--color-primary)',
-                        color: '#ffffff',
-                        borderRadius: '24px',
-                        padding: '14px 24px',
-                        fontSize: '16px',
-                        fontWeight: 600,
-                        minHeight: '44px',
-                    }}
-                >
-                    More Information
-                </Link>
+                <div className={styles.footer}>
+                    <p className={styles.price}>${product.price.toFixed(2)}</p>
+                    <span className={styles.more} aria-hidden="true">View details</span>
+                </div>
             </div>
         </article>
     )
