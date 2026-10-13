@@ -6,6 +6,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import styles from './caregiver.module.css'
+import { API_URL } from '@/lib/api'
 
 // This describes the shape of each link object returned from the API
 interface Link {
@@ -64,7 +65,7 @@ export default function FamilyPage() {
   // fetchLinks calls the backend and updates the links state
   const fetchLinks = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/caregiver/links', {
+      const res = await fetch(`${API_URL}/api/caregiver/links`, {
         credentials: 'include'
       })
       const data = await res.json()
@@ -78,7 +79,7 @@ export default function FamilyPage() {
 
   const fetchPending = async () => {
   try {
-    const res  = await fetch('http://localhost:5000/api/caregiver/pending', {
+    const res  = await fetch(`${API_URL}/api/caregiver/pending`, {
       credentials: 'include'
     })
     const data = await res.json()
@@ -92,7 +93,7 @@ export default function FamilyPage() {
   const sendLinkRequest = async () => {
     setMessage('')
     try {
-      const res = await fetch('http://localhost:5000/api/caregiver/link', {
+      const res = await fetch(`${API_URL}/api/caregiver/link`, {
         method:      'POST',
         credentials: 'include',
         headers:     { 'Content-Type': 'application/json' },
@@ -118,7 +119,7 @@ export default function FamilyPage() {
   const removeLink = async (linkId: number) => {
     setMessage('')
     try {
-      const res = await fetch('http://localhost:5000/api/caregiver/unlink', {
+      const res = await fetch(`${API_URL}/api/caregiver/unlink`, {
         method:      'DELETE',
         credentials: 'include',
         headers:     { 'Content-Type': 'application/json' },
@@ -139,7 +140,7 @@ export default function FamilyPage() {
   const acceptLink = async (linkId: number) => {
   setMessage('')
   try {
-    const res  = await fetch('http://localhost:5000/api/caregiver/accept', {
+    const res  = await fetch(`${API_URL}/api/caregiver/accept`, {
       method:      'POST',
       credentials: 'include',
       headers:     { 'Content-Type': 'application/json' },

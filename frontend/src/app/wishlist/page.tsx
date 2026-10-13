@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import styles from './wishlist.module.css'
+import { API_URL } from '@/lib/api'
 
 interface WishlistItem {
   id: number
@@ -22,7 +23,7 @@ export default function WishlistPage() {
       setLoading(false)
       return
     }
-    fetch(`http://localhost:5000/api/wishlist/${user.id}`)
+    fetch(`${API_URL}/api/wishlist/${user.id}`)
       .then(res => res.json())
       .then(data => {
         setItems(data.wishlist)
@@ -39,7 +40,7 @@ export default function WishlistPage() {
 
   async function handleRemove(id: number, product_id: number) {
       const user = JSON.parse(localStorage.getItem('user') || '{}')
-      await fetch('http://localhost:5000/api/wishlist/remove', {
+      await fetch(`${API_URL}/api/wishlist/remove`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: user.id, product_id})

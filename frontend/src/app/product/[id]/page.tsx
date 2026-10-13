@@ -8,6 +8,7 @@ import Button from '@/components/ui/Button'
 import type { Product } from '@/data/products'
 import SpeakButton from '@/components/ui/SpeakButton'
 import styles from './product.module.css'
+import { API_URL } from '@/lib/api'
 
 // "daily living" -> "Daily living"
 const needLabel = (tag: string) => tag.charAt(0).toUpperCase() + tag.slice(1)
@@ -21,7 +22,7 @@ export default function ProductPage() {
     const [added, setAdded] = useState(false)
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/products')
+        fetch(`${API_URL}/api/products`)
             .then((res) => res.json())
             .then((data) => {
                 const mapped = data.products.map((item: any) => ({
@@ -47,7 +48,7 @@ export default function ProductPage() {
             window.location.href = '/login'
             return
         }
-        await fetch('http://localhost:5000/api/cart/add', {
+        await fetch(`${API_URL}/api/cart/add`, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },

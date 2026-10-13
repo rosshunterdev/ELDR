@@ -4,6 +4,7 @@ import Link from 'next/link'
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import { useState, useEffect } from 'react'
 import styles from './ProductCard.module.css'
+import { API_URL } from '@/lib/api'
 
 type Product = {
     id: number;
@@ -50,7 +51,7 @@ export default function ProductCard({ product }: Props) {
 
         if (!saved) {
 
-            const res = await fetch('http://localhost:5000/api/wishlist/add', {
+            const res = await fetch(`${API_URL}/api/wishlist/add`, {
 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -59,7 +60,7 @@ export default function ProductCard({ product }: Props) {
             const data = await res.json()
 
         } else {
-            await fetch('http://localhost:5000/api/wishlist/remove', {
+            await fetch(`${API_URL}/api/wishlist/remove`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user_id: user.id, product_id: product.id })

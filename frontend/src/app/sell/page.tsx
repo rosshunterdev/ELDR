@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import InputField from '@/components/ui/InputField'
 import Button from '@/components/ui/Button'
+import { API_URL } from '@/lib/api'
 
 // The four valid values from the product_needs enum — must match the DB exactly
 const CATEGORIES = [
@@ -70,7 +71,7 @@ async function handleSubmit(e: React.FormEvent) {
 
     setSubmitting(true)
     try {
-      const res = await fetch('http://localhost:5000/api/products/', {
+      const res = await fetch(`${API_URL}/api/products/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

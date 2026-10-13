@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Button from '@/components/ui/Button'
 import styles from './checkout.module.css'
 import shared from '@/components/ui/shared.module.css'
+import { API_URL } from '@/lib/api'
 
 interface CartItem {
   id:         number
@@ -35,7 +36,7 @@ export default function CheckoutPage() {
       }
       const user = JSON.parse(stored)
 
-      const res  = await fetch(`http://localhost:5000/api/cart/${user.id}`, {
+      const res  = await fetch(`${API_URL}/api/cart/${user.id}`, {
         credentials: 'include'
       })
       const data = await res.json()
@@ -72,7 +73,7 @@ export default function CheckoutPage() {
         ? JSON.parse(shoppingFor).elder_id
         : null
 
-      const res  = await fetch('http://localhost:5000/api/cart/checkout', {
+      const res  = await fetch(`${API_URL}/api/cart/checkout`, {
         method:      'POST',
         credentials: 'include',
         headers:     { 'Content-Type': 'application/json' },

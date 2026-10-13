@@ -7,6 +7,7 @@ import AuthCard from '@/components/ui/AuthCard'
 import styles from './login.module.css'
 import shared from '@/components/ui/shared.module.css'
 import Link from 'next/link'
+import { API_URL } from '@/lib/api'
 
 export default function LoginPage() {
 
@@ -28,7 +29,7 @@ export default function LoginPage() {
         setError('')
 
         try {
-            const response = await fetch('http://localhost:5000/api/auth/login', {
+            const response = await fetch(`${API_URL}/api/auth/login`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },

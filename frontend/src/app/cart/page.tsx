@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import buttonStyles from '@/components/ui/Button.module.css'
 import styles from './cart.module.css'
+import { API_URL } from '@/lib/api'
 
 const BagIcon = () => (
   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -43,7 +44,7 @@ export default function CartPage() {
       }
       const user = JSON.parse(stored)
 
-      const res = await fetch(`http://localhost:5000/api/cart/${user.id}`, {
+      const res = await fetch(`${API_URL}/api/cart/${user.id}`, {
         credentials: 'include'
       })
       const data = await res.json()
@@ -62,7 +63,7 @@ export default function CartPage() {
 
   const handleRemove = async (itemId: number) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/cart/remove/${itemId}`, {
+      const res = await fetch(`${API_URL}/api/cart/remove/${itemId}`, {
         method:      'DELETE',
         credentials: 'include'
       })

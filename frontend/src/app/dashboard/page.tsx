@@ -3,13 +3,14 @@
 // DASHBOARD PAGE
 import { useRouter } from 'next/navigation'
 import Button from '@/components/ui/Button'
+import { API_URL } from '@/lib/api'
 
 export default function DashboardPage() {
     const router = useRouter()
 
     async function handleLogout() {
         try {
-            const response = await fetch('http://localhost:5000/api/auth/logout', {
+            const response = await fetch(`${API_URL}/api/auth/logout`, {
                 method: 'POST',
                 credentials: 'include', // sends session cookie
             })

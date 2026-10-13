@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import styles from './orders.module.css'
+import { API_URL } from '@/lib/api'
 
 // Shape of each item inside an order
 interface OrderItem {
@@ -44,7 +45,7 @@ export default function OrdersPage() {
         return
       }
 
-      const res  = await fetch('http://localhost:5000/api/orders/history', {
+      const res  = await fetch(`${API_URL}/api/orders/history`, {
         credentials: 'include'
       })
       const data = await res.json()

@@ -5,6 +5,7 @@ import styles from './AccountPage.module.css'
 import Link from 'next/link'
 import Button from '@/components/ui/Button'
 import { useRouter } from 'next/navigation'
+import { API_URL } from '@/lib/api'
 
 interface CurrentUser {
   id:         number
@@ -49,7 +50,7 @@ export default function AccountPage() {
 
   const fetchLinks = async (userId: number) => {
     try {
-      const res  = await fetch('http://localhost:5000/api/caregiver/links', {
+      const res  = await fetch(`${API_URL}/api/caregiver/links`, {
         credentials: 'include'
       })
       const data = await res.json()
@@ -71,7 +72,7 @@ export default function AccountPage() {
 
   async function handleLogout() {
     try {
-      await fetch('http://localhost:5000/api/auth/logout', {
+      await fetch(`${API_URL}/api/auth/logout`, {
         method:      'POST',
         credentials: 'include'
       })

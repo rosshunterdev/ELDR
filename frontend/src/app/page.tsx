@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback } from 'react';
 import type { Product } from '@/data/products';
 import { filterProducts } from '@/lib/filterProducts';
 import styles from './home.module.css';
+import { API_URL } from '@/lib/api'
 
 const svgProps = {
   width: 28, height: 28, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
@@ -71,7 +72,7 @@ export default function Home() {
 
   // Only sets state once the request settles, so it is safe to call from an effect
   const loadProducts = useCallback(() => {
-    fetch('http://localhost:5000/api/products')
+    fetch(`${API_URL}/api/products`)
       .then((res) => res.json())
       .then((data) => {
         const mapped = data.products.map((item: any) => ({

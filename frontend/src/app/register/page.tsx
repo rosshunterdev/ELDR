@@ -8,6 +8,7 @@ import InputField from '@/components/ui/InputField'
 import AuthCard from '@/components/ui/AuthCard'
 import styles from './register.module.css'
 import shared from '@/components/ui/shared.module.css'
+import { API_URL } from '@/lib/api'
 
 export default function RegisterPage() {
 
@@ -54,7 +55,7 @@ export default function RegisterPage() {
 
             // Caregivers and sellers skip onboarding
             // Register them directly and go to home
-            const response = await fetch('http://localhost:5000/api/auth/register', {
+            const response = await fetch(`${API_URL}/api/auth/register`, {
                 method:      'POST',
                 credentials: 'include',
                 headers:     { 'Content-Type': 'application/json' },

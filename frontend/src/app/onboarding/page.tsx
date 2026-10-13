@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import styles from './onboarding.module.css'
 import Button from '@/components/ui/Button'
+import { API_URL } from '@/lib/api'
 
 const questions = [
   {
@@ -54,7 +55,7 @@ export default function OnboardingPage() {
       const pending = JSON.parse(localStorage.getItem('pending_registration') || '{}')
 
       // Step 1 — Register the user in the database
-      const registerRes = await fetch('http://localhost:5000/api/auth/register', {
+      const registerRes = await fetch(`${API_URL}/api/auth/register`, {
         method:      'POST',
         credentials: 'include',
         headers:     { 'Content-Type': 'application/json' },
@@ -72,7 +73,7 @@ export default function OnboardingPage() {
       // Step 2 — Save their onboarding answers
       const user = registerData.user
 
-      const onboardingRes = await fetch('http://localhost:5000/api/onboarding/submit', {
+      const onboardingRes = await fetch(`${API_URL}/api/onboarding/submit`, {
         method:      'POST',
         credentials: 'include',
         headers:     { 'Content-Type': 'application/json' },

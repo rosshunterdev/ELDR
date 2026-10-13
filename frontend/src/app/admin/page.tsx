@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import VerifiedBadge from '@/components/ui/VerifiedBadge'
+import { API_URL } from '@/lib/api'
 
 export default function AdminPage() {
     const router = useRouter()
@@ -10,7 +11,7 @@ export default function AdminPage() {
     const [loading, setLoading] = useState(true)
 
     async function handleToggle(id: number, currentVerified: boolean) {
-        const res = await fetch(`http://localhost:5000/api/admin/products/${id}/verify`, {
+        const res = await fetch(`${API_URL}/api/admin/products/${id}/verify`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ verified: !currentVerified }),
@@ -34,7 +35,7 @@ export default function AdminPage() {
             return
         }
 
-        fetch('http://localhost:5000/api/products')
+        fetch(`${API_URL}/api/products`)
             .then(res => res.json())
             .then(data => {
                 const mapped = data.products.map((item: any) => ({
