@@ -142,6 +142,9 @@ def get_links():
         # Find the logged-in user to check their role
         user = db.query(User).filter(User.id == user_id).first()
 
+        if user is None:
+         return jsonify({'error': 'User not found'}), 404
+        
         # If the logged-in user is an elder, find all their caregivers
         if user.role == 'elder':
             links = db.query(UserLink).filter(

@@ -21,13 +21,13 @@ def verify_product(id):
         if product is None:
             return jsonify({'error': 'not found'}), 404
         
-        product.is_verified=data['verified']
+        product.is_verified = data['verified']
         db.commit()
         return jsonify({'id': product.id, 'verified': product.is_verified}), 200
-         
 
-    
     except Exception as e:
         db.rollback()
         return jsonify({'error': str(e)}), 500
-
+    
+    finally:
+        db.close()

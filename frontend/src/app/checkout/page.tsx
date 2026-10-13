@@ -22,7 +22,6 @@ export default function CheckoutPage() {
   const [ordering, setOrdering]   = useState(false)
   const [error, setError]         = useState('')
 
-  // Load cart items from backend when page loads
   useEffect(() => {
     fetchCart()
   }, [])
@@ -67,7 +66,6 @@ export default function CheckoutPage() {
       }
       const user = JSON.parse(stored)
 
-      // Check if caregiver is shopping for an elder
       const shoppingFor = localStorage.getItem('shopping_for')
       const recipientId = shoppingFor
         ? JSON.parse(shoppingFor).elder_id
@@ -85,8 +83,15 @@ export default function CheckoutPage() {
       const data = await res.json()
 
       if (res.ok) {
-        // Clear shopping_for after successful checkout
         localStorage.removeItem('shopping_for')
+
+        localStorage.setItem('lastOrder', JSON.stringify({
+          order_id:   data.order_id,
+          total:      data.total,
+          status:     'Pending',
+          created_at: new Date().toISOString(),
+        }))
+
         window.location.href = '/order-confirmation'
       } else {
         setError(data.error || 'Something went wrong')
@@ -110,7 +115,6 @@ export default function CheckoutPage() {
 
       <div className={styles.content}>
 
-        {/* Order summary card */}
         <div className={styles.card}>
           <h2 className={styles.cardTitle}>Order Summary</h2>
 
@@ -131,7 +135,6 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        {/* Shipping address card */}
         <div className={styles.card}>
           <h2 className={styles.cardTitle}>Shipping Address</h2>
           <p className={styles.address}>
@@ -139,10 +142,8 @@ export default function CheckoutPage() {
           </p>
         </div>
 
-        {/* Error message */}
         {error && <p className={shared.error}>{error}</p>}
 
-        {/* Place order button */}
         <div className={styles.actions}>
           <Button variant="primary" onClick={handlePlaceOrder} disabled={ordering}>
             {ordering ? 'Placing order...' : 'Place Order'}

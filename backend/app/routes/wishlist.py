@@ -5,20 +5,17 @@ from app.models import WishlistItem, Product
 
 
 # ─── BLUEPRINT ────────────────────────────────────────────────────────────────
-# url_prefix means every route here automatically starts with /api/wishlist
 wishlist_bp = Blueprint('wishlist', __name__, url_prefix='/api/wishlist')
 
 
-@wishlist_bp.route('/<int:user_id>', methods= [ 'GET' ])
+@wishlist_bp.route('/<int:user_id>', methods=['GET'])
 def get_wishlist(user_id):
     db = SessionLocal()
     try:
         items = db.query(WishlistItem).filter_by(user_id=user_id).all()
         result = []
         for item in items:
-            # look up the product
             product = db.query(Product).filter(Product.id == item.product_id).first()
-            # append to result
             result.append({
                 'id':         item.id,
                 'product_id': item.product_id,
@@ -27,10 +24,14 @@ def get_wishlist(user_id):
                 'image':      product.image if product else None
             })
         return jsonify({'wishlist': result}), 200
-    
+
     except Exception as e:
         db.rollback()
         return jsonify({'error': str(e)}), 500
+    
+    finally:
+        db.close()
+
 
 @wishlist_bp.route('/add', methods=['POST'])
 def add_wishlist():
@@ -51,10 +52,12 @@ def add_wishlist():
         db.commit()
         return jsonify({'message': 'Added to wishlist', 'id': new_item.id}), 201
 
-
     except Exception as e:
         db.rollback()
         return jsonify({'error': str(e)}), 500
+    
+    finally:
+        db.close()
 
 
 @wishlist_bp.route('/remove', methods=['DELETE'])
@@ -80,3 +83,6 @@ def remove_wishlist():
     except Exception as e:
         db.rollback()
         return jsonify({'error': str(e)}), 500
+    
+    finally:
+        db.close()

@@ -4,7 +4,7 @@
 
 # ─── IMPORTS ──────────────────────────────────────────────────────────────────
 from app.db import Base
-from sqlalchemy import Column, Integer, String, DateTime, Numeric, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, Text, DateTime, Numeric, ForeignKey, Boolean
 from sqlalchemy.sql import func
 
 
@@ -109,6 +109,19 @@ class WishlistItem(Base):
     product_id = Column(Integer, ForeignKey('products.id'), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
+# ─── REVIEW ───────────────────────────────────────────────────────────────────
+# Stores elderly-specific reviews left on product pages
+# user_id is nullable — ON DELETE SET NULL means reviews survive account deletion
+# rating is constrained to 1–5 by the database CHECK constraint
+class Review(Base):
+    __tablename__ = "reviews"
+
+    id         = Column(Integer, primary_key=True)
+    user_id    = Column(Integer, ForeignKey('users.id'), nullable=True)
+    product_id = Column(Integer, ForeignKey('products.id'), nullable=False)
+    rating     = Column(Integer, nullable=False)
+    comment    = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 # ─── PRODUCT NEED ─────────────────────────────────────────────────────────────
 # One row per product = its accessibility category (mobility, vision, etc.)

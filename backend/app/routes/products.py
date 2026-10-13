@@ -9,22 +9,14 @@ from app.db import SessionLocal
 
 
 # ─── BLUEPRINT ────────────────────────────────────────────────────────────────
-# url_prefix means every route here automatically starts with /api/products
-# NOTE: Jove fixed route prefix (removed /api/products from decorator) and
-# switched db session from next(get_db()) to SessionLocal() — 18 June 2026
 products_bp = Blueprint('products', __name__, url_prefix='/api/products')
 
 
 # ─── EP-XX: Get All Products  ─────────────────────────────────────────────────
-# Returns the full product catalogue with category needs joined from product_needs
-
 @products_bp.route('/', methods=['GET'])
 def get_products():
     db = SessionLocal()
     try:
-
-        # Raw SQL used here to join product_needs in one query
-        # This could be refactored to ORM-style joins after submission
         rows = db.execute(text("""
             SELECT p.id, p.title, p.description, p.price,
                    p.stock_quantity, p.is_verified, p.image, n.need
@@ -39,7 +31,7 @@ def get_products():
                 'id':          r['id'],
                 'title':       r['title'],
                 'description': r['description'],
-                'price':       float(r['price']),   # Decimal → float for JSON
+                'price':       float(r['price']),
                 'stock':       r['stock_quantity'],
                 'verified':    r['is_verified'],
                 'image':       r['image'],
@@ -51,23 +43,23 @@ def get_products():
     except Exception as e:
         db.rollback()
         return jsonify({'error': str(e)}), 500
-    
+
+    finally:
+        db.close()
+
 
 # ─── EP-125/126: Create a Product  ────────────────────────────────────────────
-# Sellers POST a new listing; it saves unverified until an admin approves it
 @products_bp.route('/', methods=['POST'])
 def create_product():
     db = SessionLocal()
     try:
         data = request.get_json() or {}
 
-        # Validate the fields the table cannot be NULL without
         title = data.get('title')
         price = data.get('price')
         if not title or price is None:
             return jsonify({'error': 'Title and price are required'}), 400
 
-        # New listings always start unverified — EP-27 admin panel approves them
         product = Product(
             seller_id      = data.get('seller_id'),
             title          = title,
@@ -79,14 +71,13 @@ def create_product():
         )
 
         db.add(product)
-        db.flush()              # sends INSERT now so Postgres assigns product.id
+        db.flush()
 
-        # Attach the category as a product_needs row, if one was provided
         category = data.get('category')
         if category:
             db.add(ProductNeed(product_id=product.id, need=category))
 
-        db.commit()             # product + need committed together, one transaction
+        db.commit()
 
         return jsonify({
             'id':       product.id,
@@ -99,5 +90,6 @@ def create_product():
     except Exception as e:
         db.rollback()
         return jsonify({'error': str(e)}), 500
+
     finally:
         db.close()

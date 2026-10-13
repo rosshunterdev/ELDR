@@ -1,0 +1,154 @@
+.section {
+    margin-top: var(--space-7);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+}
+
+.heading {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-5);
+}
+
+/* Reviews on the left, the form beside them */
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: var(--space-6);
+    align-items: start;
+}
+
+.muted {
+    color: var(--color-text-muted);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    list-style: none;
+}
+
+.review {
+    padding: var(--space-4) var(--space-5);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.reviewHeader {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+}
+
+.reviewer {
+    font-weight: 700;
+}
+
+.date {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+.comment {
+    margin-top: var(--space-2);
+    line-height: 1.6;
+}
+
+.stars {
+    display: inline-flex;
+    gap: 2px;
+    color: var(--color-trust-green);
+}
+
+.stars svg {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+/* === Form ================================================================== */
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.formTitle {
+    font-size: var(--text-lg);
+}
+
+.fieldLabel {
+    font-weight: 600;
+}
+
+.ratingInput {
+    display: flex;
+    gap: var(--space-1);
+}
+
+.starButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--touch-target);
+    height: var(--touch-target);
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--color-border-strong);
+    cursor: pointer;
+    transition: color 0.15s ease, transform 0.1s ease;
+}
+
+.starButton svg {
+    width: 1.75rem;
+    height: 1.75rem;
+}
+
+.starButton:hover {
+    transform: scale(1.1);
+}
+
+.starOn {
+    color: var(--color-trust-green);
+}
+
+.textarea {
+    width: 100%;
+    min-height: 7rem;
+    padding: var(--space-3) var(--space-4);
+    color: var(--color-text);
+    background-color: var(--color-surface);
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    resize: vertical;
+}
+
+.textarea:focus-visible {
+    border-color: var(--color-focus);
+    outline-offset: 0;
+}
+
+.error {
+    font-weight: 600;
+    color: var(--color-danger);
+}
+
+.success {
+    font-weight: 600;
+    color: var(--color-trust-green);
+}
+
+@media (max-width: 860px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+}

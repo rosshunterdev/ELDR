@@ -7,6 +7,7 @@ import VerifiedBadge from '@/components/ui/VerifiedBadge'
 import Button from '@/components/ui/Button'
 import type { Product } from '@/data/products'
 import SpeakButton from '@/components/ui/SpeakButton'
+import ReviewsSection from '@/components/ui/ReviewsSection'
 import styles from './product.module.css'
 import { API_URL } from '@/lib/api'
 
@@ -163,6 +164,8 @@ export default function ProductPage() {
                     </div>
                 </div>
             </div>
+
+            <ReviewsSection productId={id} />
         </main>
     )
 }
