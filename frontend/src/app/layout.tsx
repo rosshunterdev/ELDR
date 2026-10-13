@@ -1,17 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Atkinson_Hyperlegible_Next } from "next/font/google";
 import "./globals.css";
 import { AccessibilityProvider } from "../context/AccessibilityContext"
 
 import Navbar from '@/components/ui/Navbar'  // works because it's the default export
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// Atkinson Hyperlegible was designed by the Braille Institute for low-vision
+// readers: look-alike characters (I l 1, O 0, b d) are deliberately distinct.
+const atkinson = Atkinson_Hyperlegible_Next({
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
@@ -27,11 +24,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-    <body className="min-h-full flex flex-col">
+    <html lang="en" className={atkinson.variable}>
+    <body>
       <AccessibilityProvider>
         <Navbar />
         {children}
