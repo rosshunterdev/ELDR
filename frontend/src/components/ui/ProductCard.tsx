@@ -32,6 +32,7 @@ const HeartIcon = () => (
 export default function ProductCard({ product }: Props) {
 
     const [saved, setSaved] = useState(false)
+    const [imageFailed, setImageFailed] = useState(false)
     useEffect(() => {
         const stored = localStorage.getItem(`wishlist-${product.id}`)
         if (stored === 'true') setSaved(true)
@@ -72,12 +73,16 @@ export default function ProductCard({ product }: Props) {
     return (
         <article className={styles.card}>
             <div className={styles.media}>
-                <img
-                    src={product.image ?? 'https://placehold.co/400x300'}
-                    alt=""
-                    loading="lazy"
-                    className={styles.image}
-                />
+                {/* Missing or broken images fall back to the plain mint panel */}
+                {product.image && !imageFailed && (
+                    <img
+                        src={product.image}
+                        alt=""
+                        loading="lazy"
+                        className={styles.image}
+                        onError={() => setImageFailed(true)}
+                    />
+                )}
                 <button
                     onClick={handleWishlistToggle}
                     aria-label={`Save ${product.name} to wishlist`}

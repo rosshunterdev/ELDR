@@ -72,6 +72,11 @@
     flex: 1;
 }
 
+/* Some listings are entered in lower case ("walking device") */
+.title::first-letter {
+    text-transform: uppercase;
+}
+
 .price {
     font-size: var(--text-2xl);
     font-weight: 700;
@@ -89,7 +94,6 @@
 .purchase {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
     margin-top: var(--space-2);
     padding: var(--space-5);
     background-color: var(--color-surface);
@@ -102,9 +106,13 @@
     flex-wrap: wrap;
     align-items: center;
     gap: var(--space-2);
-    min-height: 1.6em;
     font-weight: 600;
     color: var(--color-trust-green);
+}
+
+/* The live region stays in the DOM but takes no space until it has a message */
+.status:not(:empty) {
+    margin-top: var(--space-3);
 }
 
 .status a {

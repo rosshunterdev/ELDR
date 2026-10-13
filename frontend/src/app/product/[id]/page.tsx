@@ -20,6 +20,8 @@ export default function ProductPage() {
     const [product, setProduct] = useState<Product | null>(null)
     const [loading, setLoading] = useState(true)
     const [added, setAdded] = useState(false)
+    const [loadFailed, setLoadFailed] = useState(false)
+    const [imageFailed, setImageFailed] = useState(false)
 
     useEffect(() => {
         fetch(`${API_URL}/api/products`)
@@ -38,7 +40,10 @@ export default function ProductPage() {
                 setProduct(found ?? null)
                 setLoading(false)
             })
-            .catch(() => setLoading(false))
+            .catch(() => {
+                setLoadFailed(true)
+                setLoading(false)
+            })
     }, [id])
 
     async function handleAddToCart() {
@@ -82,6 +87,21 @@ export default function ProductPage() {
         )
     }
 
+    if (loadFailed) {
+        return (
+            <main className={`container ${styles.page}`}>
+                {backLink}
+                <div className="empty-state" role="alert">
+                    <h1>This product didn&apos;t load</h1>
+                    <p>Check your connection, then reload the page.</p>
+                    <Button variant="secondary" fullWidth={false} onClick={() => window.location.reload()}>
+                        Reload page
+                    </Button>
+                </div>
+            </main>
+        )
+    }
+
     if (!product) {
         return (
             <main className={`container ${styles.page}`}>
@@ -101,8 +121,13 @@ export default function ProductPage() {
 
             <div className={styles.layout}>
                 <div className={styles.media}>
-                    {product.image && (
-                        <img src={product.image} alt={product.name} className={styles.image} />
+                    {product.image && !imageFailed && (
+                        <img
+                            src={product.image}
+                            alt={product.name}
+                            className={styles.image}
+                            onError={() => setImageFailed(true)}
+                        />
                     )}
                 </div>
 
